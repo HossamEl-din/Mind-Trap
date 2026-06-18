@@ -1,0 +1,343 @@
+<div class="page-container">
+  
+  <aside class="sidebar">
+    <a routerLink="/" class="logo-link">
+  <div class="logo-container">
+    <img src="logo.png" alt="Mind Trap Logo" class="logo-img">
+    <span class="logo-text">Mind Trap</span>
+  </div>
+</a>
+    <nav>
+      <a routerLink="/dashboard" class="nav-item">Dashboard</a>
+      <a routerLink="/learning-path" class="nav-item">Learning Path</a>
+      <a routerLink="/problems" class="nav-item">Problems</a>
+      <a routerLink="/contests" class="nav-item">Contests</a>
+      <a routerLink="/challenges" class="nav-item">Challenges</a>
+      <a routerLink="/mentorship" routerLinkActive="active" class="nav-item active">Mentorship</a>
+      <a routerLink="/settings" class="nav-item">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    
+    <div class="header-section">
+      <div class="title-group">
+        <h1 class="page-title gradient-text">Mentorship</h1> 
+        <p class="subtitle">Find your perfect mentor to help you reach your goals faster.</p>
+      </div>
+      <div class="top-actions">
+        <button class="btn-secondary" (click)="toggleStudentsSection()"><i class="fa-solid fa-user-graduate"></i> My Students</button>
+        <button class="become-mentor-btn" (click)="openApplyModal()">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          Become a Mentor
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box blue-accent">
+        <div class="stat-icon-wrapper"><i class="fa-solid fa-person-chalkboard"></i></div>
+        <h2>{{ stats.activeMentors }}</h2><p>Active Mentors</p>
+      </div>
+      <div class="stat-box green-accent">
+        <div class="stat-icon-wrapper"><i class="fa-solid fa-user-graduate"></i></div>
+        <h2>{{ stats.students }}</h2><p>Students Helped</p>
+      </div>
+      <div class="stat-box yellow-accent">
+        <div class="stat-icon-wrapper"><i class="fa-solid fa-star"></i></div>
+        <h2>{{ stats.rating }}</h2><p>Avg Rating</p>
+      </div>
+      <div class="stat-box purple-accent">
+        <div class="stat-icon-wrapper"><i class="fa-solid fa-gift"></i></div>
+        <h2>100%</h2><p>Free Service</p>
+      </div>
+    </div>
+
+    <div class="section-container border-orange" *ngIf="pendingRequests.length > 0">
+      <div class="section-header">
+        <h3><i class="fa-solid fa-hourglass-half"></i> Pending Requests</h3>
+        <span class="badge-count">{{ pendingRequests.length }}</span>
+      </div>
+      <div class="list-item" *ngFor="let req of pendingRequests">
+        <div class="item-av" style="background: linear-gradient(135deg, #7B2EFF, #00D9FF);">{{ req.initials }}</div>
+        <div class="item-info">
+          <h4>{{ req.name }}</h4>
+          <p>{{ req.level }} · {{ req.time }}</p>
+        </div>
+        <div class="item-actions">
+          <button class="btn-accept" (click)="acceptRequest(req.connectionId)"><i class="fa-solid fa-check"></i> Accept</button>
+          <button class="btn-reject" (click)="rejectRequest(req.connectionId)"><i class="fa-solid fa-xmark"></i> Reject</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-container border-green" *ngIf="showStudents && myStudents.length > 0">
+      <div class="section-header">
+        <h3><i class="fa-solid fa-user-graduate"></i> My Students</h3>
+      </div>
+      <div class="list-item" *ngFor="let stu of myStudents">
+        <div class="item-av" [style.background]="stu.avatarColor" style="color: #0F172A;">{{ stu.initials }}</div>
+        <div class="item-info">
+          <h4>{{ stu.name }}</h4>
+          <p>{{ stu.level }} · {{ stu.since }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-container border-blue" *ngIf="myMentors.length > 0">
+      <div class="section-header">
+        <h3><i class="fa-solid fa-thumbtack"></i> My Mentors</h3>
+        <span class="header-note">Only active mentors show contact info</span>
+      </div>
+      <div class="my-mentors-grid">
+        <div class="my-mentor-card" *ngFor="let m of myMentors">
+          <div class="item-av" [style.background]="m.avatarColor">{{ m.initials }}</div>
+          <div class="item-info">
+            <h4>{{ m.name }}</h4>
+            <p><span class="badge-small" [class.senior]="m.level==='Senior'" [class.level2]="m.level==='Level 2'">
+              <i class="fa-solid" [ngClass]="m.level === 'Senior' ? 'fa-medal' : 'fa-graduation-cap'"></i> {{ m.level }}
+            </span> · {{ m.status }}</p>
+          </div>
+          <div class="item-actions flex-col">
+            <button class="btn-contact" *ngIf="m.status === 'Active'" (click)="openContactModal(m)"><i class="fa-solid fa-phone"></i> Contact</button>            
+            <button class="btn-end" (click)="endMentorship(m)">End</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filters-bar">
+      <div class="search-wrapper">
+        <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input type="text" class="search-input" placeholder="Search mentors by name or expertise..." [(ngModel)]="searchTerm" (input)="filterMentors()">
+      </div>
+      <div class="filter-actions">
+        <select class="filter-dropdown" [(ngModel)]="selectedLevel" (change)="filterMentors()">
+          <option value="All Levels">All Levels</option>
+          <option value="Level 1">Level 1</option>
+          <option value="Level 2">Level 2</option>
+          <option value="Senior">Senior</option>
+        </select>
+        <button class="filter-pill" [class.active]="selectedStatus === 'All'" (click)="setStatusFilter('All')">All</button>
+        <button class="filter-pill" [class.active]="selectedStatus === 'Available'" (click)="setStatusFilter('Available')">Available</button>
+        <button class="filter-pill" [class.active]="selectedStatus === 'Full'" (click)="setStatusFilter('Full')">Full</button>
+      </div>
+    </div>
+
+    <div class="mentors-grid">
+      <div class="mentor-card" *ngFor="let mentor of filteredMentors">
+        
+        <div class="card-header">
+          <div class="avatar" [style.background]="mentor.avatarColor">
+            {{ mentor.initials }}
+            <span class="status-dot" *ngIf="mentor.isOnline"></span>
+          </div>
+          <div class="header-info">
+            <h3>{{ mentor.name }}</h3>
+            <p class="role">{{ mentor.role }}</p>
+            <div class="rating">
+              <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+              <span class="rating-text">{{ mentor.rating }} ({{ mentor.reviews }} reviews)</span>
+            </div>
+            <div class="badges">
+              <span class="badge verified"><i class="fa-solid fa-circle-check"></i> Verified</span>
+              <span class="badge" [ngClass]="{'senior': mentor.level === 'Senior', 'level2': mentor.level === 'Level 2', 'level1': mentor.level === 'Level 1'}">
+                <i class="fa-solid" [ngClass]="mentor.level === 'Senior' ? 'fa-medal' : (mentor.level === 'Level 2' ? 'fa-graduation-cap' : 'fa-book-open')"></i> {{ mentor.level }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <p class="bio">{{ mentor.bio }}</p>
+
+        <div class="mentor-stats-bar">
+          <div class="m-stat"><h4>{{ mentor.studentsCount }}</h4><p>Students</p></div>
+          <div class="m-stat"><h4>{{ mentor.experienceYears }} yrs</h4><p>Experience</p></div>
+          <div class="m-stat"><h4>{{ mentor.rating }} <i class="fa-solid fa-star"></i></h4><p>Rating</p></div>
+        </div>
+
+        <div class="subjects">
+          <span class="sub-tag" *ngFor="let sub of mentor.subjects">{{ sub }}</span>
+        </div>
+
+        <div class="capacity">
+          <div class="cap-header">
+            <span><i class="fa-solid fa-users" style="margin-right: 5px;"></i> Capacity</span>
+            <span [class.text-red]="mentor.status === 'Full'">
+              {{ mentor.capacityCurrent }} / {{ mentor.capacityMax }}{{ mentor.status === 'Full' ? ' — Full' : ' slots' }}
+            </span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" 
+                 [style.width.%]="(mentor.capacityCurrent / mentor.capacityMax) * 100"
+                 [class.bg-red]="mentor.status === 'Full'"></div>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-requested" *ngIf="mentor.status === 'Requested' || mentor.status === 'requested'" disabled>
+            <i class="fa-solid fa-check"></i> Requested
+          </button>
+          
+          <button class="btn-full" *ngIf="mentor.status === 'Full' || mentor.status === 'full'" disabled>
+            <i class="fa-solid fa-ban"></i> Currently Full
+          </button>
+          
+          <button class="contact-btn" *ngIf="mentor.status === 'Available' || mentor.status === 'available'" (click)="sendMentorshipRequest(mentor)">
+            <i class="fa-solid fa-paper-plane"></i> Request Mentor
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+    <div class="modal-content contact-modal" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <h2 class="modal-title">Contact Mentor</h2>
+        <button class="close-btn" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="contact-profile horizontal">
+        <div class="modal-avatar rounded-sq" [style.background]="selectedMentor?.avatarColor || 'linear-gradient(135deg, #7B2EFF, #00D9FF)'">
+          {{ selectedMentor?.initials || 'UN' }}
+        </div>
+        <div class="profile-info">
+          <h3>{{ selectedMentor?.name || 'Unknown Mentor' }}</h3>
+          <p class="role">{{ selectedMentor?.role || 'Mentor' }}</p>
+        </div>
+      </div>
+
+      <div class="contact-details-section new-style">
+        
+        <div class="contact-row">
+          <div class="contact-info">
+            <span class="c-label">PHONE NUMBER</span>
+            <span class="c-value">{{ selectedMentor?.phone || 'Not Provided' }}</span>
+          </div>
+          <button class="action-btn" (click)="copyToClipboard(selectedMentor?.phone)">Copy</button>
+        </div>
+
+        <div class="contact-row">
+          <div class="contact-info">
+            <span class="c-label">EMAIL ADDRESS</span>
+            <span class="c-value">{{ selectedMentor?.email || 'Not Provided' }}</span>
+          </div>
+          <button class="action-btn" (click)="copyToClipboard(selectedMentor?.email)">Copy</button>
+        </div>
+
+        <div class="contact-row" *ngIf="selectedMentor?.whatsapp">
+          <div class="contact-info">
+            <span class="c-label">WHATSAPP</span>
+            <span class="c-value">Open WhatsApp Chat</span>
+          </div>
+          <button class="action-btn open-btn" (click)="openLink(selectedMentor?.whatsapp, 'whatsapp')">Open</button>
+        </div>
+
+        <div class="contact-row" *ngIf="selectedMentor?.linkedin">
+          <div class="contact-info">
+            <span class="c-label">LINKEDIN</span>
+            <span class="c-value">View Profile</span>
+          </div>
+          <button class="action-btn open-btn" (click)="openLink(selectedMentor?.linkedin, 'linkedin')">Open</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="isApplyModalOpen" (click)="closeApplyModal()">
+    <div class="modal-content apply-modal" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <h2 class="modal-title"> Become a Mentor</h2>
+        <button class="close-btn" (click)="closeApplyModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <p class="modal-subtitle">Help other students on their CP journey. All mentors volunteer their time for free.</p>
+      
+      <form class="apply-form" (ngSubmit)="submitApplication()">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" placeholder="Your full name" [(ngModel)]="applyFormData.fullName" name="fullName" required>
+          </div>
+          <div class="form-group">
+            <label>Job Title</label>
+            <input type="text" placeholder="e.g. Software Engineer" [(ngModel)]="applyFormData.jobTitle" name="jobTitle">
+          </div>
+          <div class="form-group">
+            <label>Phone *</label>
+            <input type="tel" placeholder="+20 1XX XXX XXXX" [(ngModel)]="applyFormData.phoneNumber" name="phone" required>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" placeholder="your@email.com" [(ngModel)]="applyFormData.email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label>WhatsApp</label>
+            <input type="text" placeholder="wa.me/201XXXXXXXXX" [(ngModel)]="applyFormData.whatsappLink" name="whatsapp">
+          </div>
+          <div class="form-group">
+            <label>LinkedIn</label>
+            <input type="text" placeholder="linkedin.com/in/you" [(ngModel)]="applyFormData.linkedinProfile" name="linkedin">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Mentoring Level *</label>
+          <div class="level-cards">
+            <div class="level-card" [class.active]="applyFormData.level === 'Newcomers'" (click)="selectLevel('Newcomers')">
+              <span class="level-icon"></span>
+              <span>Newcomers</span>
+            </div>
+            <div class="level-card" [class.active]="applyFormData.level === 'Level 1'" (click)="selectLevel('Level 1')">
+              <span class="level-icon"></span>
+              <span>Level 1</span>
+            </div>
+            <div class="level-card" [class.active]="applyFormData.level === 'Level 2'" (click)="selectLevel('Level 2')">
+              <span class="level-icon"></span>
+              <span>Level 2</span>
+            </div>
+            <div class="level-card" [class.active]="applyFormData.level === 'Senior'" (click)="selectLevel('Senior')">
+              <span class="level-icon"></span>
+              <span>Senior</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Max Students *</label>
+            <select [(ngModel)]="applyFormData.maxStudents" name="maxStudents">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Experience (years)</label>
+            <input type="text" placeholder="e.g. 3" [(ngModel)]="applyFormData.experienceYears" name="experience">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Expertise Topics</label>
+          <input type="text" placeholder="e.g. Graph Theory, DP, Sorting" [(ngModel)]="applyFormData.expertise" name="expertise">
+        </div>
+
+        <div class="form-group">
+          <label>Short Bio</label>
+          <textarea placeholder="Tell students about yourself..." [(ngModel)]="applyFormData.bio" name="bio" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn"> Submit Application</button>
+      </form>
+
+    </div>
+  </div>
+</div>

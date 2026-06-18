@@ -1,0 +1,431 @@
+.detail-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+  gap: 0;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #9ca3af;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.back-btn:hover {
+  color: white;
+  border-color: white;
+}
+
+.problem-name {
+  font-size: 22px;
+  font-weight: 700;
+  background: linear-gradient(to right, #00D9FF, #7B2EFF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  flex: 1;
+}
+
+.mode-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(0,217,255,0.12);
+  color: #00D9FF;
+  border: 1px solid rgba(0,217,255,0.25);
+  white-space: nowrap;
+}
+
+.mode-badge.review-mode {
+  background: rgba(0,255,136,0.12);
+  color: #00ff88;
+  border-color: rgba(0,255,136,0.25);
+}
+
+.lang-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.lang-tab {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: #9ca3af;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-tab:hover { color: white; }
+.lang-tab.active {
+  background: rgba(0,217,255,0.15);
+  color: #00D9FF;
+  border-color: rgba(0,217,255,0.3);
+}
+
+.acceptance-badge {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.dot-accept {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #00ff88;
+}
+
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  flex: 1;
+  min-height: 0;
+}
+
+.left-panel {
+  background: #0F172A;
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.info-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.info-tab {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.info-tab:hover { color: white; }
+
+.info-tab.active {
+  color: #00D9FF;
+  border-bottom: 2px solid #00D9FF;
+  margin-bottom: -1px;
+}
+
+.info-content {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.tag-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.diff-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.diff-badge.easy   { background: rgba(0,255,136,0.12); color: #00ff88; }
+.diff-badge.medium { background: rgba(255,165,0,0.12); color: #FFA500; }
+.diff-badge.hard   { background: rgba(255,60,60,0.12);  color: #FF6B6B; }
+
+.tag {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  background: rgba(0,217,255,0.1);
+  color: #00D9FF;
+}
+
+.desc-text {
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.example-block {
+  margin-bottom: 20px;
+}
+
+.example-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.example-io {
+  background: #0d0f1a;
+  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.io-row {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.io-label {
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 55px;
+}
+
+.io-row code {
+  color: #00D9FF;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+}
+
+.constraints-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.constraints-list li {
+  color: #cbd5e1;
+  font-size: 13px;
+  padding: 10px 15px;
+  background: #0d0f1a;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.05);
+  font-family: 'Courier New', monospace;
+}
+
+.right-panel {
+  background: #0F172A;
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.review-banner {
+  padding: 10px 20px;
+  background: rgba(0,255,136,0.08);
+  border-bottom: 1px solid rgba(0,255,136,0.2);
+  color: #00ff88;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.code-area {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.code-editor {
+  width: 100%;
+  flex: 1;
+  background: #0d0f1a;
+  color: #e2e8f0;
+  border: none;
+  padding: 20px;
+  font-family: 'Courier New', 'Fira Code', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  tab-size: 4;
+  min-height: 220px;
+}
+
+.code-editor[readonly] {
+  opacity: 0.85;
+  cursor: default;
+}
+
+.output-panel {
+  padding: 12px 20px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  max-height: 130px;
+  overflow-y: auto;
+}
+
+.output-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #9ca3af;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.output-text {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #9ca3af;
+}
+
+.output-text.success { color: #00ff88; }
+.output-text.error   { color: #FF6B6B; }
+
+.action-row {
+  display: flex;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-hint {
+  background: transparent;
+  border: 1px solid rgba(255,165,0,0.3);
+  color: #FFA500;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-hint:hover { background: rgba(255,165,0,0.1); }
+
+.btn-ai {
+  background: transparent;
+  border: 1px solid rgba(123,46,255,0.35);
+  color: #a78bff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-ai:hover { background: rgba(123,46,255,0.1); }
+
+.btn-run {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid rgba(0,217,255,0.35);
+  color: #00D9FF;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-run:hover:not(:disabled) { background: rgba(0,217,255,0.1); }
+.btn-run:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-submit {
+  background: linear-gradient(to right, #00D9FF, #7B2EFF);
+  color: white;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-submit:hover:not(:disabled) {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.detail-container {
+  background-color: #0b1121; 
+  color: #ffffff;
+  
+  /* 👇 السطور الجديدة اللي هتحل المشكلة 👇 */
+  min-height: 100vh; /* ده بيجبر الصفحة تاخد طول الشاشة بالكامل كحد أدنى */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 👇 ضيفي ده كمان عشان يخلي بوكس الكود والوصف يطولوا ويمالو الشاشة 👇 */
+.split-layout {
+  flex-grow: 1;
+}
+/* تنسيق صندوق الـ Format */
+.format-container {
+  background-color: #0b1121; /* لون كحلي غامق جداً زي LeetCode */
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 25px;
+}
+
+.format-section {
+  margin-bottom: 20px;
+}
+
+.format-section:last-child {
+  margin-bottom: 0;
+}
+
+/* تنسيق العناوين والألوان */
+.format-title {
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 15px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.input-title {
+  color: #00e5ff; /* لون لبني */
+}
+
+.output-title {
+  color: #ff4757; /* لون بينك/أحمر */
+}
+
+/* تنسيق النص الداخلي */
+.format-text {
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 14px;
+  color: #f8fafc;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap; 
+}

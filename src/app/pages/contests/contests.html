@@ -1,0 +1,135 @@
+<div class="page-container">
+
+  <aside class="sidebar">
+   <a routerLink="/" class="logo-link">
+  <div class="logo-container">
+    <img src="logo.png" alt="Mind Trap Logo" class="logo-img">
+    <span class="logo-text">Mind Trap</span>
+  </div>
+</a>
+    <nav>
+      <a routerLink="/dashboard" class="nav-item">Dashboard</a>
+      <a routerLink="/learning-path" class="nav-item">Learning Path</a>
+      <a routerLink="/problems" class="nav-item">Problems</a>
+      <a routerLink="/contests" routerLinkActive="active" class="nav-item">Contests</a>
+      <a routerLink="/challenges" class="nav-item">Challenges</a>
+      <a routerLink="/mentorship" class="nav-item">Mentorship</a>
+      <a routerLink="/settings" class="nav-item">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <h1 class="page-title">Contest Calendar </h1>
+    <p class="page-subtitle">All upcoming contests from multiple platforms in one place</p>
+
+    <div class="filters-header"
+      style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <div class="filter-tabs">
+        <button *ngFor="let f of filters" class="filter-tab" [class.active]="activeFilter === f" (click)="setFilter(f)">
+          {{ f }}
+        </button>
+      </div>
+
+      <button class="btn-sync" (click)="syncContests()"
+        style="background: #8B5CF6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;">
+        🔄 Sync Contests
+      </button>
+    </div>
+
+    <div class="live-banner" *ngIf="liveContest">
+      <div class="live-left">
+        <span class="live-badge">● LIVE NOW</span>
+        <span class="live-title">{{ liveContest.title }}</span>
+        <div class="live-meta">
+          <span>⏱ Duration: {{ liveContest.duration }}</span>
+          <span>👥 {{ liveContest.participantCount != null ? (liveContest.participantCount | number) : 'N/A' }}
+            participants</span>
+        </div>
+      </div>
+      <a [href]="liveContest.url" target="_blank" class="join-btn"
+        style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+        Join Contest →
+      </a>
+    </div>
+
+    <div class="contests-grid">
+      <div class="contest-card" *ngFor="let contest of filteredContests">
+
+        <div class="card-header">
+          <div class="platform-badge" [style.background]="getPlatformColor(contest.platform) + '22'"
+            [style.color]="getPlatformColor(contest.platform)">
+            <span class="platform-letter">{{ getPlatformLetter(contest.platform) }}</span>
+            <span>{{ contest.platform }}</span>
+          </div>
+          <span class="status-badge" [class.live]="contest.status === 'LIVE'"
+            [class.upcoming]="contest.status === 'UPCOMING'">
+            {{ contest.status }}
+          </span>
+        </div>
+
+        <h3 class="contest-title">{{ contest.title }}</h3>
+        <div class="contest-meta">
+          <div class="meta-row">
+
+            <span>📅 {{ contest.startTime | date:'EEE, MMM d' }} at {{ contest.startTime | date:'h:mm a' }}</span>
+          </div>
+          <div class="meta-row">
+            <span>⏱ {{ contest.duration }}</span>
+          </div>
+          <div class="meta-row">
+            <span>👥 {{ contest.participantCount != null ? (contest.participantCount | number) : 'N/A' }}
+              registered</span>
+          </div>
+        </div>
+
+        <div class="timer-box">
+          <span class="timer-label">STARTS IN&nbsp;</span>
+          <span class="timer-value">{{ contest.timeRemainingStr }}</span>
+        </div>
+
+        <div class="card-actions">
+          <a [href]="contest.url" target="_blank" class="btn-register" [class.registered]="contest.registered"
+            (click)="toggleRegister(contest)"
+            style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+            {{ contest.registered ? 'Registered ✓' : 'Register' }}
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="calendar-section">
+      <div class="calendar-header-nav"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 class="calendar-title" style="margin: 0;">{{ currentMonth }}</h2>
+        <div class="cal-nav-buttons">
+          <button (click)="prevMonth()"
+            style="background: transparent; border: 1px solid #444; color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; margin-right: 10px; transition: 0.3s;">&#10094;
+            Prev</button>
+          <button (click)="nextMonth()"
+            style="background: transparent; border: 1px solid #444; color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; transition: 0.3s;">Next
+            &#10095;</button>
+        </div>
+      </div>
+
+      <div class="calendar-grid">
+        <div class="cal-header" *ngFor="let d of ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']">{{ d }}</div>
+        <div class="cal-day" *ngFor="let cell of calendarDays" [class.empty]="!cell.day"
+          [class.has-contest]="cell.contests.length > 0"
+          [style.border]="cell.day && selectedDay === cell.day ? '2px solid #8B5CF6' : ''"
+          [style.background]="cell.day && selectedDay === cell.day ? 'rgba(139, 92, 246, 0.2)' : ''"
+          (click)="cell.day ? selectDay(cell.day) : null" style="cursor: pointer; transition: 0.3s;">
+          <span class="day-num" *ngIf="cell.day">{{ cell.day }}</span>
+          <div class="day-contests">
+            <span class="cal-dot" *ngFor="let c of cell.contests" [style.background]="getPlatformColor(c.platform)"
+              [title]="c.title">
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>

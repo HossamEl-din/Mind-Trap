@@ -1,0 +1,216 @@
+<div class="page-container">
+
+  <aside class="sidebar">
+   <a routerLink="/" class="logo-link">
+  <div class="logo-container">
+    <img src="logo.png" alt="Mind Trap Logo" class="logo-img">
+    <span class="logo-text">Mind Trap</span>
+  </div>
+</a>
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item active">Dashboard</a>
+      <a routerLink="/learning-path" class="nav-item">Learning Path</a>
+      <a routerLink="/problems" class="nav-item">Problems</a>
+      <a routerLink="/contests" class="nav-item">Contests</a>
+      <a routerLink="/challenges" class="nav-item">Challenges</a>
+      <a routerLink="/mentorship" class="nav-item">Mentorship</a>
+      <a routerLink="/settings" class="nav-item">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    
+    <div *ngIf="isLoading && !stats" style="color: #00D9FF; padding: 20px; font-size: 18px;">
+      Loading Dashboard... ⏳
+    </div>
+
+    <header class="dashboard-header" *ngIf="stats">
+      <div class="header-welcome">
+        <h1>Welcome back, {{ stats.firstName || 'User' }}!</h1>
+        <p>Ready to solve some problems today?</p>
+      </div>
+      
+      <div class="header-user">
+        
+        <div class="notification-bell-container" (click)="toggleNotifications($event)">
+          <div class="notification-bell">
+            <i class="fas fa-bell" style="font-size: 18px;"></i>
+            <span class="notification-dot" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+          </div>
+
+          <div class="notifications-dropdown" *ngIf="showNotifications" (click)="$event.stopPropagation()">
+            <div class="dropdown-header">
+              <h3>Notifications</h3>
+            </div>
+            
+            <div class="dropdown-body">
+              <div class="no-notifs" *ngIf="notifications.length === 0">
+                No notifications yet.
+              </div>
+              
+              <div class="notif-item" *ngFor="let notif of notifications" 
+                   [class.unread]="!notif.isRead" 
+                   (click)="markAsRead(notif, $event)">
+                <div class="notif-icon">
+                  <i class="fas fa-khanda" *ngIf="notif.type === 'BattleInvite'"></i>
+                  <i class="fas fa-bell" *ngIf="notif.type !== 'BattleInvite'"></i>
+                </div>
+                <div class="notif-content">
+                  <p>{{ notif.message }}</p>
+                  <span class="notif-time">{{ notif.createdAt | date:'shortTime' }}</span>
+                </div>
+                <div class="unread-dot" *ngIf="!notif.isRead"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-profile-chip">
+          <div class="user-avatar">{{ (stats.firstName || '?').charAt(0) | uppercase }}</div>
+          <div class="user-info">
+            <span class="user-name">{{ stats.firstName }}</span>
+            <span class="user-level">{{ stats.skillLevel || 'Beginner' }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="stats-grid" *ngIf="stats">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-trend" style="color: #10b981;">Active</div>
+        </div>
+        <div class="stat-value">{{ stats.problemsSolved || 0 }}</div>
+        <div class="stat-title">Problems Solved</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <div class="stat-trend" style="color: #f59e0b;">Active</div>
+        </div>
+        <div class="stat-value">{{ stats.contestsParticipated || 0 }}</div>
+        <div class="stat-title">Contests Participated</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon" style="background: rgba(0, 217, 255, 0.1); color: #00D9FF;">
+            <i class="fas fa-chart-simple"></i>
+          </div>
+          <div class="stat-trend" style="color: #00D9FF;">Rank</div>
+        </div>
+        <div class="stat-value">#{{ stats.globalRanking || 0 }}</div>
+        <div class="stat-title">Global Ranking</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div class="stat-trend" style="color: #ef4444;">Fire</div>
+        </div>
+        <div class="stat-value">{{ stats.dayStreak || 0 }}</div>
+        <div class="stat-title">Day Streak</div>
+      </div>
+    </div>
+
+    <div class="middle-section" *ngIf="stats">
+      
+      <div class="card-panel learning-path-panel">
+        <div class="panel-header">
+          <h2>Your Learning Path</h2>
+          <a routerLink="/learning-path" class="view-all">View All →</a>
+        </div>
+        
+        <div class="path-items">
+          <div *ngIf="learningPath.length === 0" style="color: #9ca3af;">No topics in progress yet.</div>
+          <div class="path-item" *ngFor="let item of learningPath">
+            <div class="path-icon" [style.background]="item.color + '22'" [style.color]="item.color" style="font-weight: bold;">
+              {{ item.topicName.charAt(0) | uppercase }}
+            </div>
+            <div class="path-details">
+              <div class="path-title-row">
+                <h3>{{ item.topicName }}</h3>
+              </div>
+              <div class="progress-wrapper">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width]="item.completionPercentage + '%'" [style.background]="item.color"></div>
+                </div>
+                <div class="progress-meta">
+                  <span [style.color]="item.color">{{ item.completionPercentage }}% Complete</span>
+                  <span>{{ item.solvedProblems }}/{{ item.totalProblems }} Problems</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-panel streak-panel">
+        <div class="panel-header">
+          <h2>Daily Streak</h2>
+        </div>
+        <div class="streak-center">
+          <div class="streak-number">{{ stats.dayStreak || 0 }}</div>
+        </div>
+        
+        <div class="heatmap-grid">
+          <div class="heat-box level-1"></div>
+          <div class="heat-box level-2"></div>
+          <div class="heat-box level-3"></div>
+          <div class="heat-box level-4"></div>
+          <div class="heat-box level-4"></div>
+          
+          <div class="heat-box level-2"></div>
+          <div class="heat-box level-3"></div>
+          <div class="heat-box level-4"></div>
+          <div class="heat-box level-4"></div>
+          <div class="heat-box level-3"></div>
+        </div>
+        <p class="streak-footer">Days in a row!</p>
+      </div>
+
+    </div>
+
+    <div class="card-panel contests-panel" *ngIf="stats">
+      <div class="panel-header">
+        <h2>Upcoming Contests</h2>
+        <a routerLink="/contests" class="view-all">View Calendar →</a>
+      </div>
+      
+      <div class="contest-items">
+        <div *ngIf="upcomingContests.length === 0" style="color: #9ca3af;">No upcoming contests.</div>
+        <div class="contest-item" *ngFor="let contest of upcomingContests">
+          <div class="contest-left">
+            <div class="contest-logo" [style.background]="getPlatformColor(contest.platform).bg" [style.color]="getPlatformColor(contest.platform).color">
+              {{ getPlatformCode(contest.platform) }}
+            </div>
+            <div class="contest-info">
+              <h3>{{ contest.title }}</h3>
+              <p>{{ contest.startTime | date:'medium' }}</p>
+            </div>
+          </div>
+          <div class="contest-right">
+            <div class="contest-timer">{{ contest.duration }}</div>
+            <div class="contest-status" [style.color]="getPlatformColor(contest.platform).color">{{ contest.status }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <a [routerLink]="action.link" class="action-card" *ngFor="let action of quickActions">
+        <div class="action-icon"><i [class]="action.icon"></i></div>
+        <div class="action-title">{{ action.title }}</div>
+      </a>
+    </div>
+
+  </main>
+</div>

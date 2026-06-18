@@ -1,0 +1,163 @@
+<div class="page-container">
+
+  <aside class="sidebar">
+<a routerLink="/" class="logo-link">
+  <div class="logo-container">
+    <img src="logo.png" alt="Mind Trap Logo" class="logo-img">
+    <span class="logo-text">Mind Trap</span>
+  </div>
+</a>
+    <nav>
+      <a routerLink="/dashboard" class="nav-item">Dashboard</a>
+      <a routerLink="/learning-path" class="nav-item">Learning Path</a>
+      <a routerLink="/problems" routerLinkActive="active" class="nav-item">Problems</a>
+      <a routerLink="/contests" class="nav-item">Contests</a>
+      <a routerLink="/challenges" class="nav-item">Challenges</a>
+      <a routerLink="/mentorship" class="nav-item">Mentorship</a>
+      <a routerLink="/settings" class="nav-item">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <ng-container *ngIf="viewMode === 'list'">
+
+      <h1 class="page-title">Practice Problems </h1>
+      <p class="page-subtitle">Solve problems from multiple platforms in one place</p>
+
+     <div class="search-bar">
+        <input
+          type="text"
+          placeholder="Search problems..."
+          [(ngModel)]="searchQuery"
+          class="search-input"
+        />
+      </div>
+
+      <div class="filter-tabs">
+        <button
+          *ngFor="let tab of tabs"
+          class="filter-tab"
+          [class.active]="activeTab === tab"
+          (click)="activeTab = tab">
+          {{ tab }}
+        </button>
+      </div>
+
+      <div class="secondary-filters">
+        <button
+          *ngFor="let d of difficulties"
+          class="diff-btn"
+          [class.active]="difficultyFilter === d"
+          [class.easy]="d === 'Easy'"
+          [class.medium]="d === 'Medium'"
+          [class.hard]="d === 'Hard'"
+          (click)="difficultyFilter = d">
+          {{ d }}
+        </button>
+
+        <div class="spacer"></div>
+
+        <select class="platform-select" [(ngModel)]="platformFilter">
+          <option *ngFor="let p of platforms">{{ p }}</option>
+        </select>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-number">{{ stats.solved }}</span>
+          <span class="stat-label">Solved</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">{{ stats.attempted }}</span>
+          <span class="stat-label">Attempted</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">{{ stats.total }}</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">{{ stats.acceptance }}</span>
+          <span class="stat-label">Acceptance</span>
+        </div>
+      </div>
+
+      <div class="problems-table">
+        <div class="table-header">
+          <span class="col-status">STATUS</span>
+          <span class="col-problem">PROBLEM</span>
+          <span class="col-difficulty">DIFFICULTY</span>
+          <span class="col-platform">PLATFORM</span>
+          <span class="col-acceptance">ACCEPTANCE</span>
+          <span class="col-action">ACTION</span>
+        </div>
+
+        <div
+          class="table-row"
+          *ngFor="let problem of filteredProblems"
+          [class.solved-row]="problem.status === 'solved'">
+
+          <span class="col-status">
+            <span class="status-dot"
+              [class.dot-solved]="problem.status === 'solved'"
+              [class.dot-attempted]="problem.status === 'attempted'"
+              [class.dot-none]="!problem.status">
+            </span>
+          </span>
+
+          <div class="col-problem">
+            <span class="problem-title">{{ problem.title }}</span>
+            <div class="tag-row">
+              <span class="tag" *ngFor="let tag of problem.tags">{{ tag }}</span>
+            </div>
+          </div>
+
+          <span class="col-difficulty">
+            <span class="diff-badge"
+              [class.easy]="problem.difficulty === 'Easy'"
+              [class.medium]="problem.difficulty === 'Medium'"
+              [class.hard]="problem.difficulty === 'Hard'">
+              {{ problem.difficulty }}
+            </span>
+          </span>
+
+          <span class="col-platform platform-name">{{ problem.platform }}</span>
+
+          <span class="col-acceptance accept-pct">{{ problem.acceptance }}</span>
+
+          <div class="col-action action-btns">
+            <button class="btn-solve" (click)="openSolve(problem)">Solve</button>
+            <button
+              class="btn-review"
+              *ngIf="problem.status === 'solved'"
+              (click)="openReview(problem)">
+              Review
+            </button>
+          </div>
+        </div>
+
+      
+        <div class="empty-state" *ngIf="filteredProblems.length === 0">
+          <p>No problems found for the selected filters.</p>
+        </div>
+      </div>
+
+      <div class="pagination">
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <span class="page-dots">...</span>
+        <button class="page-btn">8</button>
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="viewMode !== 'list' && selectedProblem">
+  <app-problem-detail
+    [problem]="selectedProblem"
+    [mode]="viewMode"
+    (back)="backToList()">
+  </app-problem-detail>
+</ng-container>
+  </main>
+</div>

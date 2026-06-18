@@ -1,0 +1,105 @@
+<div class="page-container">
+  
+  <aside class="sidebar">
+   <a routerLink="/" class="logo-link">
+  <div class="logo-container">
+    <img src="logo.png" alt="Mind Trap Logo" class="logo-img">
+    <span class="logo-text">Mind Trap</span>
+  </div>
+</a>
+    <nav>
+      <a routerLink="/dashboard" class="nav-item">Dashboard</a>
+      <a routerLink="/learning-path" routerLinkActive="active" class="nav-item active">Learning Path</a>
+      <a routerLink="/problems" class="nav-item">Problems</a>
+      <a routerLink="/contests" class="nav-item">Contests</a>
+      <a routerLink="/challenges" class="nav-item">Challenges</a>
+      <a routerLink="/mentorship" class="nav-item">Mentorship</a>
+      <a routerLink="/settings" class="nav-item">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <h1 class="page-title">Learning Roadmap</h1>
+    <p class="page-subtitle">Master competitive programming with our structured learning path</p>
+
+    <div *ngIf="isLoading" style="color: #00D9FF; font-size: 18px; margin-top: 20px;">
+      Loading your learning path... ⏳
+    </div>
+
+    <div *ngIf="errorMessage" style="color: #ef4444; background: rgba(239,68,68,0.1); padding: 15px; border-radius: 10px; margin-top: 20px;">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && levelsData.length > 0">
+      
+      <div class="page-header">
+        <div class="stats-bar">
+          <div class="stat">
+            <span class="stat-number">{{ totalProblems }}</span>
+            <span class="stat-label">Total Problems</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">{{ completedCount }}/{{ activeTopics.length }}</span>
+            <span class="stat-label">Topics Completed</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">{{ overallProgress }}%</span>
+            <span class="stat-label">Level Progress</span>
+          </div>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="overallProgress"></div>
+          </div>
+          <p class="progress-label">{{ overallProgress }}% Complete — Keep going!</p>
+        </div>
+      </div>
+
+      <div class="filter-tabs">
+        <button
+          *ngFor="let lvl of levelsData"
+          class="filter-tab"
+          [class.active]="activeLevelName === lvl.levelName"
+          (click)="activeLevelName = lvl.levelName">
+          {{ lvl.levelName }}
+        </button>
+      </div>
+
+      <div class="topics-list">
+        <div class="topic-card" *ngFor="let topic of activeTopics; trackBy: trackByFn"
+          [class.completed]="topic.progressPercentage === 100"
+          [class.in-progress]="topic.progressPercentage < 100"
+          style="cursor: pointer;"
+          (click)="navigateToTopic(topic.id)">
+
+          <div class="topic-header">
+            <div class="topic-left">
+              <div class="topic-icon">{{ (topic.name || '?').charAt(0) }}</div>
+              <div class="topic-info">
+                <div class="topic-title-row">
+                  <h3>{{ topic.name }}</h3>
+                  <span class="status-badge"
+                    [class.badge-completed]="topic.progressPercentage === 100"
+                    [class.badge-progress]="topic.progressPercentage < 100">
+                    {{ topic.status || 'Available' }}
+                  </span>
+                </div>
+                <div class="topic-meta">
+                  <span class="meta-item meta-problems">{{ topic.totalProblems || 0 }} Problems</span>
+                  <span class="meta-item meta-level">{{ topic.solvedProblems || 0 }} Solved</span>
+                  <span class="meta-item meta-weeks">{{ topic.resourcesCount || 0 }} Resources</span>
+                </div>
+              </div>
+            </div>
+            <div class="topic-progress-circle">{{ topic.progressPercentage || 0 }}%</div>
+          </div>
+
+          <button class="continue-btn" (click)="$event.stopPropagation(); navigateToTopic(topic.id)">
+            Continue Learning →
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>

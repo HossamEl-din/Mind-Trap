@@ -1,0 +1,130 @@
+<div class="detail-container">
+
+  <div class="top-bar">
+    <button class="back-btn" (click)="back.emit()">
+      ← Back to Problems
+    </button>
+    <h2 class="problem-name">{{ problem?.title }}</h2>
+    <div class="mode-badge" [class.review-mode]="mode === 'review'">
+      {{ mode === 'review' ? ' Review Mode' : ' Solve Mode' }}
+    </div>
+  </div>
+
+  <div class="lang-tabs" *ngIf="mode === 'solve'">
+    <button
+      *ngFor="let lang of languages"
+      class="lang-tab"
+      [class.active]="activeLanguage === lang"
+      (click)="activeLanguage = lang">
+      {{ lang }}
+    </button>
+    <span class="acceptance-badge">
+      <span class="dot-accept"></span> {{ problem?.acceptance || '0%' }} acceptance
+    </span>
+  </div>
+
+  <div class="split-layout">
+
+    <div class="left-panel">
+
+      <div class="info-tabs">
+        <button class="info-tab" [class.active]="activeTab === 'statement'" (click)="activeTab = 'statement'">Description</button>
+        <button class="info-tab" [class.active]="activeTab === 'examples'" (click)="activeTab = 'examples'">Examples</button>
+        <button class="info-tab" [class.active]="activeTab === 'constraints'" (click)="activeTab = 'constraints'">Constraints</button>
+      </div>
+
+      <div class="info-content" *ngIf="activeTab === 'statement'">
+        <div class="tag-row">
+          <span class="diff-badge" [class.easy]="problem?.difficulty === 'Easy'" [class.medium]="problem?.difficulty === 'Medium'" [class.hard]="problem?.difficulty === 'Hard'">
+            {{ problem?.difficulty }}
+          </span>
+          <span class="tag" *ngFor="let t of problem?.tags">{{ t }}</span>
+        </div>
+        <p class="desc-text">{{ problem?.statement }}</p>
+
+        <div class="format-container" *ngIf="problem?.inputFormat || problem?.outputFormat">
+          
+          <div class="format-section" *ngIf="problem?.inputFormat">
+            <h4 class="format-title input-title">Input Format:</h4>
+            <p class="format-text">{{ problem?.inputFormat }}</p>
+          </div>
+          
+          <div class="format-section" *ngIf="problem?.outputFormat">
+            <h4 class="format-title output-title">Output Format:</h4>
+            <p class="format-text">{{ problem?.outputFormat }}</p>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="info-content" *ngIf="activeTab === 'examples'">
+        <div class="example-block" *ngFor="let ex of problem?.examples; let i = index">
+          <p class="example-label">Example {{ i + 1 }}</p>
+          <div class="example-io">
+            <div class="io-row">
+              <span class="io-label">Input:</span>
+              <code>{{ ex.inputData }}</code>
+            </div>
+            <div class="io-row">
+              <span class="io-label">Output:</span>
+              <code>{{ ex.expectedOutput }}</code>
+            </div>
+          </div>
+          <p class="explanation-text" *ngIf="ex.explanation && ex.explanation !== 'string'">
+            <strong>Explanation:</strong> {{ ex.explanation }}
+          </p>
+        </div>
+        
+        <div *ngIf="!problem?.examples || problem?.examples.length === 0">
+          <p style="color: #888;">No examples available.</p>
+        </div>
+      </div>
+
+      <div class="info-content" *ngIf="activeTab === 'constraints'">
+        <p style="white-space: pre-line; line-height: 1.6;">{{ problem?.constraints }}</p>
+      </div>
+
+    </div>
+
+    <div class="right-panel">
+
+      <div class="review-banner" *ngIf="mode === 'review'">
+        <span>✅ Solved — reviewing your accepted solution</span>
+      </div>
+
+      <div class="code-area">
+        <textarea
+          class="code-editor"
+          [(ngModel)]="userCode"
+          [readonly]="mode === 'review'"
+          spellcheck="false"
+          placeholder="Write your code here...">
+        </textarea>
+      </div>
+
+      <div class="output-panel" *ngIf="output">
+        <p class="output-label">Output</p>
+        <pre class="output-text" [class.success]="runResult === 'success'" [class.error]="runResult === 'error'">{{ output }}</pre>
+      </div>
+
+      <div class="action-row">
+        <ng-container *ngIf="mode === 'solve'">
+          <button class="btn-hint" (click)="getHint()">💡 Get Hint</button>
+          <button class="btn-ai" (click)="askAI()">🤖 AI Help</button>
+          <button class="btn-run" (click)="runCode()" [disabled]="isRunning">
+            {{ isRunning ? 'Running...' : '▶ Run Code' }}
+          </button>
+          <button class="btn-submit" (click)="submitSolution()" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Submitting...' : '✓ Submit Solution' }}
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="mode === 'review'">
+          <button class="btn-hint" (click)="back.emit()">← Back to List</button>
+          <button class="btn-submit" style="margin-left:auto" (click)="switchToSolve()"> Edit & Re-submit</button>
+        </ng-container>
+      </div>
+
+    </div>
+  </div>
+</div>

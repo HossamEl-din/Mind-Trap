@@ -1,0 +1,206 @@
+<div class="page-container">
+  <aside class="sidebar">
+<a routerLink="/" class="logo-link">
+  <div class="logo-container">
+    <img src="logo.png" alt="Mind Trap Logo" class="logo-img">
+    <span class="logo-text">Mind Trap</span>
+  </div>
+</a>
+    <nav>
+      <a routerLink="/dashboard" class="nav-item">Dashboard</a>
+      <a routerLink="/learning-path" class="nav-item">Learning Path</a>
+      <a routerLink="/problems" class="nav-item">Problems</a>
+      <a routerLink="/contests" class="nav-item">Contests</a>
+      <a routerLink="/challenges" class="nav-item active">Challenges</a>
+      <a routerLink="/mentorship" class="nav-item">Mentorship</a>
+      <a routerLink="/settings" class="nav-item">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="header-flex">
+      <div>
+        <h1 class="page-title">Battle Arena</h1>
+        <p class="page-subtitle">Challenge friends and compete in coding battles</p>
+      </div>
+      <button class="join-btn" type="button" (click)="openCreateChallenge()">Create Battle</button>
+    </div>
+
+    <div class="stats-grid">
+      @for (s of stats; track s.label) {
+        <div class="stat-box">
+          <span class="stat-value">{{ s.value }}</span>
+          <span class="stat-label">{{ s.label }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="filter-tabs">
+      @for (t of tabs; track t) {
+        <button class="filter-tab" [class.active]="activeTab() === t" (click)="setTab(t)">
+          {{ t }}
+        </button>
+      }
+    </div>
+
+    <div class="contests-grid">
+      @for (c of challenges; track c.id) {
+        <div class="ch-card">
+          <div class="ch-header">
+            <span class="ch-tag type-tag" [class.team]="c.typeTag === 'TEAM BATTLE'">{{ c.typeTag }}</span>
+            <span class="ch-tag status-tag" [class.pending]="c.statusTag === 'PENDING'">{{ c.statusTag }}</span>
+          </div>
+
+          <h3 class="ch-title">{{ c.title }}</h3>
+
+          <div class="ch-players">
+            <div class="ch-player">
+              <div class="ch-avatar" [style.background]="c.p1.color">{{ c.p1.initials }}</div>
+              <div class="ch-info">
+                <span class="ch-name">{{ c.p1.name }}</span>
+                <span class="ch-sub">{{ c.p1.sub }}</span>
+              </div>
+            </div>
+            <div class="ch-vs">VS</div>
+            <div class="ch-player right">
+              <div class="ch-info">
+                <span class="ch-name text-right">{{ c.p2.name }}</span>
+                <span class="ch-sub text-right">{{ c.p2.sub }}</span>
+              </div>
+              <div class="ch-avatar" [style.background]="c.p2.color">{{ c.p2.initials }}</div>
+            </div>
+          </div>
+
+          @if (c.statusTag === 'COMPLETED') {
+            <div class="ch-footer-meta">
+              <span>● Completed</span>
+              <span [style.color]="c.isWinner ? '#22c55e' : '#ef4444'">🏆 {{ c.isWinner ? 'You Won!' : 'You Lost' }}</span>
+              <span>✨ +120 points</span>
+            </div>
+          }
+
+          <div class="ch-actions">
+            <button class="ch-btn primary" (click)="handlePrimaryAction(c)">{{ c.btn1 }}</button>
+            <button class="ch-btn secondary" (click)="openDetails(c)">{{ c.btn2 }}</button>
+          </div>
+        </div>
+      } @empty {
+         <div class="empty-state" style="grid-column: 1 / -1; text-align: center; color: #9ca3af; padding: 20px;">
+           No battles found in this tab.
+         </div>
+      }
+    </div>
+
+    <div class="lb-section mt-40">
+      <div class="lb-header-wrap">
+        <h2 class="lb-title">Challenge Leaderboard 🏆</h2>
+        <div class="lb-filters">
+          <button class="lb-tab" [class.active]="lbFilter() === 'This Week'" (click)="setLbFilter('This Week')">This Week</button>
+          <button class="lb-tab" [class.active]="lbFilter() === 'This Month'" (click)="setLbFilter('This Month')">This Month</button>
+          <button class="lb-tab" [class.active]="lbFilter() === 'All Time'" (click)="setLbFilter('All Time')">All Time</button>
+        </div>
+      </div>
+
+      <div class="lb-list">
+        @for (p of leaderboard; track p.rank) {
+          <div class="lb-row">
+            <div class="lb-rank"
+                 [class.rank-1]="p.rank === 1"
+                 [class.rank-2]="p.rank === 2"
+                 [class.rank-3]="p.rank === 3">{{ p.rank }}</div>
+
+            <div class="lb-player-info">
+              <div class="lb-avatar" [style.background]="p.color">{{ p.initials }}</div>
+              <div class="lb-details">
+                <span class="lb-name">{{ p.name }}</span>
+                <span class="lb-sub">{{ p.sub }}</span>
+              </div>
+            </div>
+
+            <div class="lb-points">{{ p.points }}</div>
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (showCreateModal()) {
+      <div class="modal-backdrop" (click)="closeCreateChallenge()">
+        <div class="modal-card battle-modal" (click)="$event.stopPropagation()">
+          
+          <div class="modal-header">
+            <h2 class="modal-title">⚔️ Create 1v1 Battle</h2>
+          </div>
+
+          <div class="info-box">
+            <strong>First Blood Rules:</strong> Both players get the same problem. First correct solution wins <strong>+50 pts</strong>. Draw if time expires.
+          </div>
+
+          <div class="form-group">
+            <label class="modal-label">Opponent Username</label>
+            <input type="text" class="modal-input" [(ngModel)]="newChallenge.opponent" placeholder="e.g. omar_khaled">
+          </div>
+
+          <div class="form-group">
+            <label class="modal-label">Topic</label>
+            <select class="modal-input" [(ngModel)]="newChallenge.topic">
+              <option value="Random">Random</option>
+              <option value="Arrays">Arrays</option>
+              <option value="Strings">Strings</option>
+              <option value="Dynamic Programming">Dynamic Programming</option>
+              <option value="Graphs">Graphs</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="modal-label">Difficulty</label>
+            <select class="modal-input" [(ngModel)]="newChallenge.difficulty">
+              <option value="Random">Random</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="modal-label">Time Limit</label>
+            <select class="modal-input" [(ngModel)]="newChallenge.timeLimit">
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="60">60 minutes</option>
+            </select>
+          </div>
+
+          <button class="submit-battle-btn" (click)="createChallenge()">
+            ⚔️ Send Battle Invite
+          </button>
+
+        </div>
+      </div>
+    }
+
+    @if (showDetailsModal() && selectedChallenge) {
+      <div class="modal-backdrop" (click)="closeDetails()">
+        <div class="modal-card battle-modal" (click)="$event.stopPropagation()">
+          
+          <div class="modal-header">
+            <h2 class="modal-title">📋 Battle Details</h2>
+          </div>
+
+          <div class="info-box" style="font-size: 14px;">
+            <p style="margin-bottom: 12px;"><strong style="color: #fff;">Challenge:</strong> {{ selectedChallenge.title }}</p>
+            <p style="margin-bottom: 12px;"><strong style="color: #fff;">Status:</strong> <span class="ch-tag status-tag" [class.pending]="selectedChallenge.statusTag === 'PENDING'">{{ selectedChallenge.statusTag }}</span></p>
+            <p style="margin-bottom: 12px;"><strong style="color: #fff;">You:</strong> {{ selectedChallenge.p1.name }}</p>
+            <p><strong style="color: #fff;">Opponent:</strong> {{ selectedChallenge.p2.name }}</p>
+          </div>
+
+          <div class="ch-actions" style="margin-top: 20px;">
+            <button class="ch-btn secondary" style="width: 100%;" (click)="closeDetails()">Close Window</button>
+          </div>
+
+        </div>
+      </div>
+    }
+
+  </main>
+</div>

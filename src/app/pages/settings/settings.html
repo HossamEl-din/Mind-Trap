@@ -1,0 +1,352 @@
+<div class="settings-container">
+
+  <aside class="sidebar">
+    <div class="logo">
+     <a routerLink="/" class="logo-link">
+  <div class="logo-container">
+    <img src="logo.png" alt="Mind Trap Logo" class="logo-img">
+    <span class="logo-text">Mind Trap</span>
+  </div>
+</a>
+    </div>
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">Dashboard</a>
+      <a routerLink="/learning-path" routerLinkActive="active" class="nav-item"> Learning Path</a>
+      <a routerLink="/problems" routerLinkActive="active" class="nav-item"> Problems</a>
+      <a routerLink="/contests" routerLinkActive="active" class="nav-item"> Contests</a>
+      <a routerLink="/challenges" routerLinkActive="active" class="nav-item"> Challenges</a>
+      <a routerLink="/mentorship" routerLinkActive="active" class="nav-item"> Mentorship</a>
+      <a routerLink="/settings" routerLinkActive="active" class="nav-item"> Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="profile-header">
+      <div class="profile-info">
+        <div class="avatar">MA</div>
+        <div class="profile-details">
+          <h2>{{ accountData.firstName || 'Manar' }} {{ accountData.lastName || 'Abdelgwad' }}</h2>
+          <p>@{{ accountData.username || 'manar_codes' }}</p>
+
+          <div class="badges">
+            <span class="badge gold"> Pro Member</span>
+            <span class="badge green"> Verified</span>
+            <span class="badge orange"> {{ dashboardStats?.dayStreak || 0 }} Day Streak</span>
+            <span class="badge yellow"> Top 5% Global</span>
+          </div>
+
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="stat">
+          <span class="stat-number">{{ dashboardStats?.problemsSolved || 0 }}</span>
+          <span class="stat-label">Problems Solved</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{{ dashboardStats?.contestsParticipated || 0 }}</span>
+          <span class="stat-label">Contests</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">#{{ dashboardStats?.globalRanking || 0 }}</span>
+          <span class="stat-label">Global Rank</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab" [class.active]="activeTab === 'account'" (click)="activeTab = 'account'">Account</button>
+      <button class="tab" [class.active]="activeTab === 'preferences'" (click)="activeTab = 'preferences'">Preferences</button>
+      <button class="tab" [class.active]="activeTab === 'connections'" (click)="activeTab = 'connections'">Connections</button>
+      <button class="tab" [class.active]="activeTab === 'notifications'" (click)="activeTab = 'notifications'">Notifications</button>
+      <button class="tab" [class.active]="activeTab === 'privacy'" (click)="activeTab = 'privacy'">Privacy</button>
+    </div>
+
+    <div *ngIf="isLoading" style="text-align: center; padding: 20px; color: #00e5ff;">
+      Loading settings...
+    </div>
+
+    <div class="tab-content" *ngIf="!isLoading">
+
+      <div *ngIf="activeTab === 'account'">
+        <h3>Account Settings</h3>
+        <p class="subtitle">Manage your personal information and account details</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" [(ngModel)]="accountData.firstName" />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" [(ngModel)]="accountData.lastName" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" [(ngModel)]="accountData.username" />
+          <small>Your unique identifier on MindTrap</small>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" [(ngModel)]="accountData.email" />
+          <small>We'll send important updates to this email</small>
+        </div>
+        <div class="form-group">
+          <label>Bio</label>
+          <textarea rows="4" [(ngModel)]="accountData.bio"></textarea>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" [(ngModel)]="accountData.location" />
+          </div>
+          <div class="form-group">
+            <label>University</label>
+            <input type="text" [(ngModel)]="accountData.university" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-save" (click)="saveAccount()">Save Changes</button>
+          <button class="btn-cancel" (click)="loadAllSettings()">Cancel</button>
+        </div>
+      </div>
+
+      <div *ngIf="activeTab === 'preferences'">
+        <h3>Preferences</h3>
+        <p class="subtitle">Customize your MindTrap experience</p>
+
+        <div class="form-group">
+          <label>Language</label>
+          <select [(ngModel)]="preferencesData.language">
+            <option value="English">English</option>
+            <option value="Arabic">Arabic</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Preferred Programming Language</label>
+          <select [(ngModel)]="preferencesData.preferredProgrammingLanguage">
+            <option value="C++">C++</option>
+            <option value="Python">Python</option>
+            <option value="Java">Java</option>
+            <option value="JavaScript">JavaScript</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Theme</label>
+          <select [(ngModel)]="preferencesData.theme" disabled style="opacity: 0.6; cursor: not-allowed; background-color: #1a1e27;">
+            <option value="Dark">Dark Mode (Default)</option>
+          </select>
+          <small style="color: #888; margin-top: 5px; display: block;">☀️ Light mode is coming in future updates!</small>
+        </div>
+
+        <div class="form-group">
+          <label>Difficulty Filter Default</label>
+          <select [(ngModel)]="preferencesData.difficultyFilterDefault">
+            <option value="All Difficulties">All Difficulties</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+
+        <div class="toggle-group">
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Show Hints by Default</p>
+              <p class="toggle-subtitle">Display problem hints automatically</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="preferencesData.showHintsByDefault" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Auto-save Code</p>
+              <p class="toggle-subtitle">Automatically save your code as you type</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="preferencesData.autoSaveCode" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Show Leaderboards</p>
+              <p class="toggle-subtitle">Display your ranking on public leaderboards</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="preferencesData.showLeaderboards" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-save" (click)="savePreferences()">Save Preferences</button>
+        </div>
+      </div>
+
+      <div *ngIf="activeTab === 'connections'">
+        <h3>Connected Accounts</h3>
+        <p class="subtitle">Link your competitive programming profiles</p>
+
+        <div class="connections-list">
+          <div class="connection-item">
+            <div class="connection-avatar cf">CF</div>
+            <div class="connection-info">
+              <p class="connection-name">Codeforces</p>
+              <p class="connection-username">manar_coder • Specialist</p>
+            </div>
+          </div>
+          <div class="connection-item">
+            <div class="connection-avatar lc">LC</div>
+            <div class="connection-info">
+              <p class="connection-name">LeetCode</p>
+              <p class="connection-username">manar_codes • 347 problems solved</p>
+            </div>
+          </div>
+          <div class="connection-item">
+            <div class="connection-avatar gh">GH</div>
+            <div class="connection-info">
+              <p class="connection-name">GitHub</p>
+              <p class="connection-username">Not connected</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-save" (click)="syncAccounts()">Sync All Accounts</button>
+        </div>
+      </div>
+
+      <div *ngIf="activeTab === 'notifications'">
+        <h3>Notification Settings</h3>
+        <p class="subtitle">Choose what updates you want to receive</p>
+
+        <div class="toggle-group">
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Challenge Invitations</p>
+              <p class="toggle-subtitle">Receive notifications when friends challenge you</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Streak Reminders</p>
+              <p class="toggle-subtitle">Daily reminder to maintain your streak</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Mentorship Messages</p>
+              <p class="toggle-subtitle">Notifications for mentor replies and sessions</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Achievement Unlocked</p>
+              <p class="toggle-subtitle">Get notified when you earn new badges</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Email Notifications</p>
+              <p class="toggle-subtitle">Receive important updates via email</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-save">Save Settings</button>
+        </div>
+      </div>
+
+      <div *ngIf="activeTab === 'privacy'">
+        <h3>Privacy & Security</h3>
+        <p class="subtitle">Control your privacy and account security</p>
+
+        <div class="toggle-group">
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Public Profile</p>
+              <p class="toggle-subtitle">Make your profile visible to everyone</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="privacyData.publicProfile" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Show Statistics</p>
+              <p class="toggle-subtitle">Display your stats on your public profile</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="privacyData.showStatistics" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-title">Allow Friend Requests</p>
+              <p class="toggle-subtitle">Let other users send you friend requests</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="privacyData.allowFriendRequests" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-actions" style="margin-top: 20px;">
+           <button class="btn-save" (click)="savePrivacy()">Save Privacy Settings</button>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #333; margin: 30px 0;">
+
+        <h3>Change Password</h3>
+        <div class="form-group">
+          <label>Current Password</label>
+          <input type="password" [(ngModel)]="passwordData.oldPassword" placeholder="Current password" />
+        </div>
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" [(ngModel)]="passwordData.newPassword" placeholder="New password" />
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-save" (click)="changePassword()">Update Password</button>
+          <button class="btn-delete" (click)="deleteAccount()">Delete Account</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>

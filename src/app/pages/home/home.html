@@ -1,0 +1,165 @@
+<div class="home-wrapper">
+    <header>
+       <div class="logo">
+       <img src="logo.png" alt="Mind Trap Logo" class="logo-img">
+            <span class="logo-text">Mind Trap</span>
+        </div>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#learning">Learning Path</a>
+            <a href="#team">Team</a>
+            <a href="#contact">Contact</a>
+            <a routerLink="/register" class="get-started-btn">Get Started</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Master Competitive Programming</h1>
+        <p class="subtitle">Your structured journey from beginner to expert with AI-powered guidance, mentorship, and a supportive community</p>
+        <div class="cta-buttons">
+            <a routerLink="/register" class="btn btn-primary">Start Learning</a>
+            <a routerLink="/login" class="btn btn-secondary">Login</a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2>Everything You Need to Excel</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3><span class="feature-dot dot-1"></span>Structured Learning Path</h3>
+                <p>Progress from Newcomer to Senior level with curated content and tutorials designed for each stage</p>
+            </div>
+            <div class="feature-card">
+                <h3><span class="feature-dot dot-2"></span>AI-Powered Recommendations</h3>
+                <p>Get personalized problem suggestions, hints, and performance analysis tailored to your skill level</p>
+            </div>
+            <div class="feature-card">
+                <h3><span class="feature-dot dot-3"></span>Centralized Problem Sets</h3>
+                <p>Access problems from multiple online judges in one place, organized by difficulty and topic</p>
+            </div>
+            <div class="feature-card">
+                <h3><span class="feature-dot dot-4"></span>Competition Calendar</h3>
+                <p>Never miss a contest with our unified calendar showing upcoming competitions across platforms</p>
+            </div>
+            <div class="feature-card">
+                <h3><span class="feature-dot dot-5"></span>Interactive Chatbot</h3>
+                <p>Get instant help with hints, explanations, and guidance whenever you're stuck on a problem</p>
+            </div>
+            <div class="feature-card">
+                <h3><span class="feature-dot dot-6"></span>Challenges & Competitions</h3>
+                <p>Compete with friends, join team challenges, and climb the leaderboard to stay motivated</p>
+            </div>
+            <div class="feature-card">
+                <h3><span class="feature-dot dot-7"></span>Mentorship Program</h3>
+                <p>Connect with experienced mentors who can guide you through your competitive programming journey</p>
+            </div>
+            <div class="feature-card">
+                <h3><span class="feature-dot dot-8"></span>Progress Dashboard</h3>
+                <p>Track your solved problems, ranking improvements, and skill development over time</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="learning-journey" id="learning">
+        <h2>Your Learning Journey</h2>
+        <div class="journey-path">
+            <div class="journey-step">
+                <h3>Newcomer</h3>
+                <p>Start your journey</p>
+            </div>
+            <div class="journey-arrow">→</div>
+            <div class="journey-step">
+                <h3>Level 1</h3>
+                <p>Build foundations</p>
+            </div>
+            <div class="journey-arrow">→</div>
+            <div class="journey-step">
+                <h3>Level 2</h3>
+                <p>Develop skills</p>
+            </div>
+            <div class="journey-arrow">→</div>
+            <div class="journey-step">
+                <h3>Senior</h3>
+                <p>Compete at top level</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="impact">
+        <h2>Our Impact</h2>
+        <div class="impact-stats">
+            <div class="stat-card">
+                <div class="stat-number">{{ activeLearners() | number }}+</div>
+                <div class="stat-label">Active Learners</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ problemsSolved() | number }}+</div>
+                <div class="stat-label">Problems Solved</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ successStories() | number }}+</div>
+                <div class="stat-label">Success Stories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ satisfactionRate() }}%</div>
+                <div class="stat-label">Satisfaction Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="team" id="team">
+        <h2>Meet Our Team</h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="team-avatar">MD</div>
+                <h3>Mahmoud Diaa Eldin</h3>
+                <p class="team-role">AI Development</p>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar">AA</div>
+                <h3>Ali Ahmed Mahmoud</h3>
+                <p class="team-role">AI Development</p>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar">MW</div>
+                <h3>Mariam Wael Ibrahem</h3>
+                <p class="team-role">Backend Developer</p>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar">HA</div>
+                <h3>Hossam Aldin Mourad</h3>
+                <p class="team-role">Backend Developer</p>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar">AK</div>
+                <h3>Amr Khaled Hassan</h3>
+                <p class="team-role">Backend Developer</p>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar">MA</div>
+                <h3>Manar Abdelgwad</h3>
+                <p class="team-role">Frontend Developer</p>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar">HM</div>
+                <h3>Hamsa Mansour</h3>
+                <p class="team-role">Frontend Developer</p>
+            </div>
+            <div class="team-member">
+                <div class="team-avatar">MM</div>
+                <h3>Mansour Mohamed</h3>
+                <p class="team-role">Flutter Developer</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+        <h2>Ready to Start Your Journey?</h2>
+        <p>Join thousands of students mastering competitive programming</p>
+        <a routerLink="/register" class="btn">Sign Up Now</a>
+    </section>
+
+    <footer>
+        <p>© 2026 Mind Trap. Making Competitive Programming accessible for everyone.</p>
+    </footer>
+</div>
