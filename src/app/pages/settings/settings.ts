@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; 
-import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
@@ -18,20 +18,21 @@ export class Settings implements OnInit {
   preferencesData: any = {};
   privacyData: any = {};
   passwordData: any = {};
-  dashboardStats: any = {}; 
+  connectionsData: any = {};
+  dashboardStats: any = {};
 
   private apiUrl = 'https://hossammourad-001-site1.ltempurl.com/api';
   private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   ngOnInit() {
     this.loadAllSettings();
-    this.loadDashboardStats(); 
+    this.loadDashboardStats();
   }
 
   private getHeaders() {
     const token = localStorage.getItem('token');
-
     return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
   }
 
@@ -40,13 +41,15 @@ export class Settings implements OnInit {
     this.http.get<any>(`${this.apiUrl}/Users/settings`, { headers: this.getHeaders() })
       .subscribe({
         next: (res) => {
+          console.log('Settings API Response:', res);
           if (res) {
-            this.accountData = res.account || {};
-            this.preferencesData = res.preferences || {};
-            this.privacyData = res.privacy || {};
+            this.accountData = res.account || res.Account || res || {};
+            this.preferencesData = res.preferences || res.Preferences || {};
+            this.privacyData = res.privacy || res.Privacy || {};
+            this.connectionsData = res.connections || res.Connections || {};
           }
           this.isLoading = false;
-          this.cdr.detectChanges(); 
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error loading settings', err);
@@ -93,20 +96,36 @@ export class Settings implements OnInit {
       });
   }
 
+  saveConnections() {
+    this.http.put(`${this.apiUrl}/Users/connections`, this.connectionsData, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res: any) => alert(res.message || 'Connections updated successfully!'),
+        error: (err) => console.error('Error saving connections', err)
+      });
+  }
+
   changePassword() {
+    if (this.passwordData.newPassword !== this.passwordData.confirmNewPassword) {
+      alert("New passwords do not match!");
+      return;
+    }
+
     const payload = {
       currentPassword: this.passwordData.oldPassword,
       newPassword: this.passwordData.newPassword,
-      confirmNewPassword: this.passwordData.newPassword 
+      confirmNewPassword: this.passwordData.confirmNewPassword
     };
 
     this.http.put(`${this.apiUrl}/Users/change-password`, payload, { headers: this.getHeaders() })
       .subscribe({
         next: (res: any) => {
           alert(res.message || 'Password changed successfully!');
-          this.passwordData = {}; 
+          this.passwordData = {};
         },
-        error: (err) => console.error('Error changing password', err)
+        error: (err) => {
+          alert('Error changing password. Please check your inputs.');
+          console.error('Error changing password', err);
+        }
       });
   }
 
@@ -127,6 +146,13 @@ export class Settings implements OnInit {
           },
           error: (err) => console.error('Error deleting account', err)
         });
+    }
+  }
+
+  logout() {
+    if (confirm('Are you sure you want to log out?')) {
+      localStorage.removeItem('token');
+      this.router.navigate(['/login']);
     }
   }
 }

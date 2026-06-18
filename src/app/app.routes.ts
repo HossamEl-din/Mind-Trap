@@ -10,7 +10,7 @@ import { Problems } from './pages/problems/problems.component';
 import { Contests } from './pages/contests/contests';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { ChallengesComponent } from './pages/challenges/challenges';
-import { MentorshipComponent } from './pages/mentorship/mentorship';// الاستيراد الصح لصفحة تفاصيل المسألة باسم الكلاس المظبوط (ProblemDetail)
+import { MentorshipComponent } from './pages/mentorship/mentorship';
 import { ProblemDetail } from './pages/problems/problem-detail/problem-detail.component'; 
 
 export const routes: Routes = [
@@ -24,7 +24,6 @@ export const routes: Routes = [
   
   { path: 'problems', component: Problems },
 
-  // السطر اللي هيخلي زرار "Go to Battle" يفتح صفحة الكود بالـ ID المظبوط
   { path: 'problems/:id', component: ProblemDetail }, 
 
   { path: 'contests', component: Contests },

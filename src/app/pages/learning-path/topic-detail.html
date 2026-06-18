@@ -25,7 +25,7 @@
       <button class="back-btn" routerLink="/learning-path">← Back to Path</button>
 
       <div *ngIf="isLoading" style="color: #00D9FF; margin-top: 20px; font-size: 18px;">
-        Loading topic details... ⏳
+        Loading topic details... 
       </div>
 
       <div *ngIf="!isLoading && topicData">
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <h2 class="section-title">📖 Learn Material</h2>
+        <h2 class="section-title">Learn Material</h2>
         <div class="materials-grid">
             <a [href]="material.url" target="_blank" class="material-card" *ngFor="let material of topicData.resources">
                 <div class="material-icon" [ngClass]="getIconClass(material.type)">{{ getIcon(material.type) }}</div>
@@ -49,7 +49,7 @@
             <div *ngIf="topicData.resources.length === 0" style="color: #9ca3af;">No resources available yet.</div>
         </div>
 
-        <h2 class="section-title">💻 Practice Problems</h2>
+        <h2 class="section-title"> Practice Problems</h2>
         <div class="problems-container">
             <table class="problems-table" *ngIf="topicData.problems && topicData.problems.length > 0">
                 <thead>

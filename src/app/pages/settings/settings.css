@@ -309,7 +309,7 @@
   color: white;
   border-color: white;
 }
-/* Select */
+
 .form-group select {
   background: #0d0f1a;
   border: 1px solid rgba(255,255,255,0.1);
@@ -443,7 +443,6 @@ input:checked + .slider:before {
 .btn-delete:hover {
   background: rgba(255, 77, 77, 0.1);
 }
-/* Achievements */
 .achievements-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -483,4 +482,26 @@ input:checked + .slider:before {
 .achievement-desc {
   font-size: 12px;
   color: #9ca3af;
+}
+
+.logout-section {
+  margin-top: auto; 
+  padding-top: 20px;
+}
+
+
+.btn-logout {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  color: #ff4d4d;
+  cursor: pointer;
+  font-family: inherit;
+  justify-content: flex-start;
+}
+
+.btn-logout:hover {
+  background: rgba(255, 77, 77, 0.1) !important;
+  color: #ff4d4d !important;
+  border-color: #ff4d4d;
 }

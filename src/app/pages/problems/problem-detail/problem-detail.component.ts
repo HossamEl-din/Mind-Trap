@@ -46,16 +46,21 @@ export class ProblemDetail implements OnInit {
     this.route.queryParamMap.subscribe(qParams => {
       this.challengeId = qParams.get('challengeId');
     });
-    this.route.paramMap.subscribe(params => {
-      const routeId = params.get('id');
-      
-      if (routeId) {
-        this.problem = { id: routeId };
-        this.fetchProblemData(routeId);
-      } else if (this.problem && this.problem.id) {
-        this.fetchProblemData(this.problem.id);
-      }
-    });
+
+    
+    if (this.problem && this.problem.id && this.problem.id !== 'undefined') {
+      this.fetchProblemData(this.problem.id);
+    } 
+    else {
+      this.route.paramMap.subscribe(params => {
+        const routeId = params.get('id');
+        
+        if (routeId && !this.route.snapshot.url.some(segment => segment.path === 'topic')) {
+          this.problem = { id: routeId };
+          this.fetchProblemData(routeId);
+        }
+      });
+    }
   }
 
  fetchProblemData(id: any) {

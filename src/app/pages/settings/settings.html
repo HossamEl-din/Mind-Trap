@@ -18,16 +18,21 @@
       <a routerLink="/mentorship" routerLinkActive="active" class="nav-item"> Mentorship</a>
       <a routerLink="/settings" routerLinkActive="active" class="nav-item"> Settings</a>
     </nav>
+    <div class="logout-section">
+      <button class="nav-item btn-logout" (click)="logout()">
+         Log Out
+      </button>
+    </div>
   </aside>
 
   <main class="main-content">
 
     <div class="profile-header">
       <div class="profile-info">
-        <div class="avatar">MA</div>
+        <div class="avatar">{{ accountData.firstName ? accountData.firstName.charAt(0).toUpperCase() : '' }}{{ accountData.lastName ? accountData.lastName.charAt(0).toUpperCase() : '' }}</div>
         <div class="profile-details">
-          <h2>{{ accountData.firstName || 'Manar' }} {{ accountData.lastName || 'Abdelgwad' }}</h2>
-          <p>@{{ accountData.username || 'manar_codes' }}</p>
+          <h2>{{ accountData.firstName }} {{ accountData.lastName }}</h2>
+          <p>@{{ accountData.username }}</p>
 
           <div class="badges">
             <span class="badge gold"> Pro Member</span>
@@ -115,13 +120,6 @@
         <h3>Preferences</h3>
         <p class="subtitle">Customize your MindTrap experience</p>
 
-        <div class="form-group">
-          <label>Language</label>
-          <select [(ngModel)]="preferencesData.language">
-            <option value="English">English</option>
-            <option value="Arabic">Arabic</option>
-          </select>
-        </div>
 
         <div class="form-group">
           <label>Preferred Programming Language</label>
@@ -138,7 +136,7 @@
           <select [(ngModel)]="preferencesData.theme" disabled style="opacity: 0.6; cursor: not-allowed; background-color: #1a1e27;">
             <option value="Dark">Dark Mode (Default)</option>
           </select>
-          <small style="color: #888; margin-top: 5px; display: block;">☀️ Light mode is coming in future updates!</small>
+          <small style="color: #888; margin-top: 5px; display: block;"> Light mode is coming in future updates!</small>
         </div>
 
         <div class="form-group">
@@ -195,32 +193,24 @@
         <h3>Connected Accounts</h3>
         <p class="subtitle">Link your competitive programming profiles</p>
 
-        <div class="connections-list">
-          <div class="connection-item">
-            <div class="connection-avatar cf">CF</div>
-            <div class="connection-info">
-              <p class="connection-name">Codeforces</p>
-              <p class="connection-username">manar_coder • Specialist</p>
-            </div>
-          </div>
-          <div class="connection-item">
-            <div class="connection-avatar lc">LC</div>
-            <div class="connection-info">
-              <p class="connection-name">LeetCode</p>
-              <p class="connection-username">manar_codes • 347 problems solved</p>
-            </div>
-          </div>
-          <div class="connection-item">
-            <div class="connection-avatar gh">GH</div>
-            <div class="connection-info">
-              <p class="connection-name">GitHub</p>
-              <p class="connection-username">Not connected</p>
-            </div>
-          </div>
+        <div class="form-group">
+          <label>Codeforces Handle</label>
+          <input type="text" [(ngModel)]="connectionsData.codeforcesHandle" placeholder="e.g. tourist" />
+        </div>
+
+        <div class="form-group">
+          <label>LeetCode Handle</label>
+          <input type="text" [(ngModel)]="connectionsData.leetCodeHandle" placeholder="e.g. neetcode" />
+        </div>
+
+        <div class="form-group">
+          <label>GitHub Handle</label>
+          <input type="text" [(ngModel)]="connectionsData.gitHubHandle" placeholder="e.g. octocat" />
         </div>
 
         <div class="form-actions">
-          <button class="btn-save" (click)="syncAccounts()">Sync All Accounts</button>
+          <button class="btn-save" (click)="saveConnections()">Save Connections</button>
+          <button class="btn-cancel" (click)="syncAccounts()">Sync All Accounts</button>
         </div>
       </div>
 
@@ -339,6 +329,10 @@
         <div class="form-group">
           <label>New Password</label>
           <input type="password" [(ngModel)]="passwordData.newPassword" placeholder="New password" />
+        </div>
+        <div class="form-group">
+          <label>Confirm New Password</label>
+          <input type="password" [(ngModel)]="passwordData.confirmNewPassword" placeholder="Confirm new password" />
         </div>
 
         <div class="form-actions">

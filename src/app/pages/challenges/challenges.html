@@ -74,7 +74,7 @@
           @if (c.statusTag === 'COMPLETED') {
             <div class="ch-footer-meta">
               <span>● Completed</span>
-              <span [style.color]="c.isWinner ? '#22c55e' : '#ef4444'">🏆 {{ c.isWinner ? 'You Won!' : 'You Lost' }}</span>
+              <span [style.color]="c.isWinner ? '#22c55e' : '#ef4444'"> {{ c.isWinner ? 'You Won!' : 'You Lost' }}</span>
               <span>✨ +120 points</span>
             </div>
           }
@@ -93,7 +93,7 @@
 
     <div class="lb-section mt-40">
       <div class="lb-header-wrap">
-        <h2 class="lb-title">Challenge Leaderboard 🏆</h2>
+        <h2 class="lb-title">Challenge Leaderboard </h2>
         <div class="lb-filters">
           <button class="lb-tab" [class.active]="lbFilter() === 'This Week'" (click)="setLbFilter('This Week')">This Week</button>
           <button class="lb-tab" [class.active]="lbFilter() === 'This Month'" (click)="setLbFilter('This Month')">This Month</button>
@@ -128,7 +128,7 @@
         <div class="modal-card battle-modal" (click)="$event.stopPropagation()">
           
           <div class="modal-header">
-            <h2 class="modal-title">⚔️ Create 1v1 Battle</h2>
+            <h2 class="modal-title"> Create 1v1 Battle</h2>
           </div>
 
           <div class="info-box">
@@ -172,7 +172,7 @@
           </div>
 
           <button class="submit-battle-btn" (click)="createChallenge()">
-            ⚔️ Send Battle Invite
+             Send Battle Invite
           </button>
 
         </div>
@@ -184,7 +184,7 @@
         <div class="modal-card battle-modal" (click)="$event.stopPropagation()">
           
           <div class="modal-header">
-            <h2 class="modal-title">📋 Battle Details</h2>
+            <h2 class="modal-title"> Battle Details</h2>
           </div>
 
           <div class="info-box" style="font-size: 14px;">

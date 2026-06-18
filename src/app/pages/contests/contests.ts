@@ -213,10 +213,10 @@ export class Contests implements OnInit, OnDestroy {
   syncContests() {
     this.http.post(`${this.apiUrl}/sync`, {}, { headers: this.getHeaders() }).subscribe({
       next: () => {
-        alert('✅ Contests synchronized successfully!');
+        alert(' Contests synchronized successfully!');
         this.loadContests();
       },
-      error: (err) => alert('❌ Failed to sync contests.')
+      error: (err) => alert(' Failed to sync contests.')
     });
   }
 
