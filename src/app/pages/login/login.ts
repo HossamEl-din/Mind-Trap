@@ -22,7 +22,7 @@ export class Login {
 
   private http = inject(HttpClient);
   private router = inject(Router);
-  private apiUrl = 'http://hossammourad-001-site1.ltempurl.com/api/Auth/login';
+  private apiUrl = 'https://hossammourad-001-site1.ltempurl.com/api/Auth/login';
 
   onLogin() {
     if (!this.loginData.email || !this.loginData.password) {

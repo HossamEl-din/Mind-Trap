@@ -20,7 +20,7 @@ export class Settings implements OnInit {
   passwordData: any = {};
   dashboardStats: any = {}; 
 
-  private apiUrl = 'http://hossammourad-001-site1.ltempurl.com/api';
+  private apiUrl = 'https://hossammourad-001-site1.ltempurl.com/api';
   private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef);
 

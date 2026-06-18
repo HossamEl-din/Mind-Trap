@@ -89,7 +89,7 @@
     <div class="right-panel">
 
       <div class="review-banner" *ngIf="mode === 'review'">
-        <span>✅ Solved — reviewing your accepted solution</span>
+        <span> Solved — reviewing your accepted solution</span>
       </div>
 
       <div class="code-area">
@@ -107,10 +107,12 @@
         <pre class="output-text" [class.success]="runResult === 'success'" [class.error]="runResult === 'error'">{{ output }}</pre>
       </div>
 
-      <div class="action-row">
-        <ng-container *ngIf="mode === 'solve'">
-          <button class="btn-hint" (click)="getHint()">💡 Get Hint</button>
-          <button class="btn-ai" (click)="askAI()">🤖 AI Help</button>
+     <ng-container *ngIf="mode === 'solve'">
+          <button class="btn-hint" (click)="getHint()"> Get Hint</button>
+          <button class="btn-ai" (click)="askAI()"> AI Solution</button>
+          
+          <button class="btn-explain" (click)="explainCode()"> Explain</button>
+
           <button class="btn-run" (click)="runCode()" [disabled]="isRunning">
             {{ isRunning ? 'Running...' : '▶ Run Code' }}
           </button>
@@ -127,4 +129,3 @@
 
     </div>
   </div>
-</div>

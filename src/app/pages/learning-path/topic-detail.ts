@@ -46,7 +46,7 @@ export class TopicDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private cdr = inject(ChangeDetectorRef);
   
-  private apiUrl = 'http://hossammourad-001-site1.ltempurl.com/api/LearningPath/topic';
+  private apiUrl = 'https://hossammourad-001-site1.ltempurl.com/api/LearningPath/topic';
 
   ngOnInit(): void {
     this.topicId = this.route.snapshot.paramMap.get('id') || this.route.snapshot.paramMap.get('key');

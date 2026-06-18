@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class ChallengeService {
   private http = inject(HttpClient);
   
-  private baseUrl = 'http://hossammourad-001-site1.ltempurl.com/api/Challenges';
+  private baseUrl = 'https://hossammourad-001-site1.ltempurl.com/api/Challenges';
   
   private getHeaders() {
     let token = localStorage.getItem('token');

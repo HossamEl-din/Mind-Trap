@@ -31,7 +31,7 @@ export class Problems implements OnInit {
   private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef);
   
-  private apiUrl = 'http://hossammourad-001-site1.ltempurl.com/api/Problems'; 
+  private apiUrl = 'https://hossammourad-001-site1.ltempurl.com/api/Problems'; 
 
   activeTab = 'All';
   difficultyFilter = 'All';
@@ -47,6 +47,7 @@ export class Problems implements OnInit {
   platforms = ['All Platforms', 'LeetCode', 'Codeforces', 'AtCoder', 'CodeChef'];
 
   allProblems: Problem[] = []; 
+
 
   ngOnInit(): void {
     this.fetchProblems();

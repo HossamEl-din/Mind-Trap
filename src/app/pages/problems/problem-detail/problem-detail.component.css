@@ -378,19 +378,19 @@
   background-color: #0b1121; 
   color: #ffffff;
   
-  /* 👇 السطور الجديدة اللي هتحل المشكلة 👇 */
-  min-height: 100vh; /* ده بيجبر الصفحة تاخد طول الشاشة بالكامل كحد أدنى */
+
+  min-height: 100vh; 
   display: flex;
   flex-direction: column;
 }
 
-/* 👇 ضيفي ده كمان عشان يخلي بوكس الكود والوصف يطولوا ويمالو الشاشة 👇 */
+
 .split-layout {
   flex-grow: 1;
 }
-/* تنسيق صندوق الـ Format */
+
 .format-container {
-  background-color: #0b1121; /* لون كحلي غامق جداً زي LeetCode */
+  background-color: #0b1121; 
   border-radius: 8px;
   padding: 20px;
   margin-top: 25px;
@@ -404,7 +404,6 @@
   margin-bottom: 0;
 }
 
-/* تنسيق العناوين والألوان */
 .format-title {
   font-family: Consolas, 'Courier New', monospace;
   font-size: 15px;
@@ -413,14 +412,14 @@
 }
 
 .input-title {
-  color: #00e5ff; /* لون لبني */
+  color: #00e5ff; 
 }
 
 .output-title {
-  color: #ff4757; /* لون بينك/أحمر */
+  color: #ff4757; 
 }
 
-/* تنسيق النص الداخلي */
+
 .format-text {
   font-family: Consolas, 'Courier New', monospace;
   font-size: 14px;
@@ -428,4 +427,20 @@
   line-height: 1.6;
   margin: 0;
   white-space: pre-wrap; 
+}
+
+.btn-explain {
+  background: transparent;
+  border: 1px solid rgba(255, 71, 87, 0.35);
+  color: #ff4757;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-explain:hover {
+  background: rgba(255, 71, 87, 0.1);
 }

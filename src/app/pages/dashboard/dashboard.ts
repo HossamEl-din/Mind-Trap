@@ -17,7 +17,7 @@ export class Dashboard implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   
  
-  private apiDomain = 'http://hossammourad-001-site1.ltempurl.com';
+  private apiDomain = 'https://hossammourad-001-site1.ltempurl.com';
   private baseUrl = `${this.apiDomain}/api/Dashboard`;
 
   stats: any = null;

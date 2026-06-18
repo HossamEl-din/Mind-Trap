@@ -20,7 +20,7 @@ export class LearningPath implements OnInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef); 
   
-  private apiUrl = 'http://hossammourad-001-site1.ltempurl.com/api/LearningPath';
+  private apiUrl = 'https://hossammourad-001-site1.ltempurl.com/api/LearningPath';
 
   ngOnInit() {
     this.fetchLearningPath();

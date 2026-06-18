@@ -38,7 +38,7 @@ export class Contests implements OnInit, OnDestroy {
   private zone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef); 
   
-  private apiUrl = 'http://hossammourad-001-site1.ltempurl.com/api/Contests';
+  private apiUrl = 'https://hossammourad-001-site1.ltempurl.com/api/Contests';
 
   allContests: Contest[] = [];
   currentDisplayDate = new Date(); 

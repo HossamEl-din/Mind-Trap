@@ -49,7 +49,7 @@ export class MentorshipComponent implements OnInit {
   private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef);
   
-  private baseUrl = 'http://hossammourad-001-site1.ltempurl.com/api/Mentorship';
+  private baseUrl = 'https://hossammourad-001-site1.ltempurl.com/api/Mentorship';
   
   isModalOpen: boolean = false;
   selectedMentor: any = null;
